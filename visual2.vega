@@ -1,0 +1,32 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/obil0001/FIT3179A2/refs/heads/main/data3.csv",
+    "format": {"parse": {"date": "date"}}
+  },
+  
+  "repeat": {"column": ["Average taxable income or loss", "Average salary and wages", "Average net tax"]},
+  "spec": {
+    "layer": [{
+      "params": [{
+          "name": "toggleOrigin",
+          "bind": {"input": "checkbox"}
+        },
+        {
+        "name": "paintbrush",
+        "select": {"type": "point", "on": "pointerover"}
+        }
+      ],
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "State", "type": "ordinal"},
+        "y": {"field": {"repeat": "column"},
+          "type": "quantitative"},
+        "color": {"value": "#0099ff"}
+      }
+    } 
+      
+      
+    ]
+  }
+}
