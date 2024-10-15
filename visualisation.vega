@@ -1,13 +1,14 @@
+
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Victorian Suburbs Ranked by Tax Level and Net Income",
+  "background": "#F5F5F5",
   "params": [
     {
       "name": "zoom_level",
       "value": 30000,
       "bind": {
         "input": "range",
-        "min": 200,
+        "min": 6000,
         "max": 60000,
         "step": 100,
         "name": "Zoom: "
@@ -19,7 +20,7 @@
       "bind": {
         "input": "select",
         "options": [
-          [145, -37.3],
+          [145, -37.6],
           [144.3, -37.97],
           [144.9, -36.07],
           [147.1, -37.45]
@@ -35,6 +36,7 @@
         "input": "select",
         "options": ["All", "Low", "Medium", "High"],
         "name": "Tax Level Filter: "
+        
       }
     }
   ],
@@ -58,7 +60,7 @@
           }
         },
         {
-          "width": 700,
+          "width": 851,
           "height": 300,
           "title": "Suburbs Scored on Average Net Tax",
           "projection": {
@@ -75,27 +77,35 @@
               "lookup": "properties.POSTCODE",
               "from": {
                 "data": {
-                  "url": "https://raw.githubusercontent.com/obil0001/FIT3179A2/refs/heads/main/suburbnmediantax%20-%20Copy.csv"
+                  "url": "https://raw.githubusercontent.com/obil0001/FIT3179A2/refs/heads/main/SuburbDataJoined.csv"
                 },
                 "key": "Postcode",
-                "fields": ["Average Net Tax "]
+                "fields": ["Average Net Tax","Locality","Average net tax 1"]
               }
             },
             {
-              "filter": "tax_filter === 'All' || (tax_filter === 'Low' && datum['Average Net Tax '] < 0.25) || (tax_filter === 'Medium' && datum['Average Net Tax '] >= 0.25 && datum['Average Net Tax '] < 0.5) || (tax_filter === 'High' && datum['Average Net Tax '] >= 0.5)"
+              "filter": "tax_filter === 'All' || (tax_filter === 'Low' && datum['Average Net Tax'] < 0.25) || (tax_filter === 'Medium' && datum['Average Net Tax'] >= 0.25 && datum['Average Net Tax'] < 0.5) || (tax_filter === 'High' && datum['Average Net Tax'] >= 0.5)"
             }
           ],
-          "mark": { "type": "geoshape" },
+          
+          "mark": { "type": "geoshape" ,"tooltip": {"content": "data"}},
           "encoding": {
             "color": {
-              "field": "Average Net Tax ",
+              "field": "Average Net Tax",
               "type": "quantitative",
               "scale": { "type": "linear" },
-              "legend": { "title": "Tax Score" }
+              "legend": { "title": "Tax Score" ,
+              "orient": "bottom",
+              "direction": "horizontal",
+              "legendX": 500,
+              "legendY": 500
+
+              }
             },
             "tooltip": [
-              { "field": "properties.POSTCODE", "type": "nominal", "title": "Postcode" },
-              { "field": "Average Net Tax ", "type": "quantitative", "title": "Tax Score (0-1)" }
+              { "field": "Locality", "type": "nominal", "title": "Postcode" },
+              { "field": "Average Net Tax", "type": "quantitative", "title": "Tax Score (0-1)" },
+              { "field": "Average net tax 1", "type": "quantitative", "title": "Average Net Tax $"}
             ]
           }
         }
@@ -120,7 +130,7 @@
           }
         },
         {
-          "width": 700,
+          "width": 851,
           "height": 300,
           "title": "Suburbs Scored on Net Income",
           "projection": {
@@ -137,10 +147,10 @@
               "lookup": "properties.POSTCODE",
               "from": {
                 "data": {
-                  "url": "https://raw.githubusercontent.com/obil0001/FIT3179A2/refs/heads/main/suburbnmediantax%20-%20Copy.csv"
+                  "url": "https://raw.githubusercontent.com/obil0001/FIT3179A2/refs/heads/main/SuburbDataJoined.csv"
                 },
                 "key": "Postcode",
-                "fields": ["Average Salary"]
+                "fields": ["Average Salary","Locality","Average Salary 1"]
               }
             }
           ],
@@ -150,11 +160,18 @@
               "field": "Average Salary",
               "type": "quantitative",
               "scale": { "type": "linear" },
-              "legend": { "title": "Salary Score" }
+              "legend": { "title": "Salary Score",
+              "orient": "bottom",
+              "direction": "horizontal",
+              "legendX": 500,
+              "legendY": 30
+              } 
             },
             "tooltip": [
-              { "field": "properties.POSTCODE", "type": "nominal", "title": "Postcode" },
-              { "field": "Average Salary", "type": "quantitative", "title": "Salary Score (0-1)" }
+              { "field": "Locality", "type": "nominal", "title": "Postcode" },
+
+              { "field": "Average Salary", "type": "quantitative", "title": "Salary Score (0-1)" },
+              { "field": "Average Salary 1", "type": "quantitative", "title": "Average Salary $"}
             ]
           }
         }
